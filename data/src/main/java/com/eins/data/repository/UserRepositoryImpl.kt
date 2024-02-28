@@ -7,7 +7,9 @@ class UserRepositoryImpl: UserRepository {
     override suspend fun GetUser(id: String, pass: String): User {
         return User(
             nickName = "kdb",
-            email = "kdb@kdb.com"
+            email = "kdb@kdb.com",
+            accessToken = "access",
+            refreshToken = "refresh"
         )
     }
 }
