@@ -1,3 +1,5 @@
+import org.gradle.initialization.Environment.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -37,6 +39,25 @@ android {
     }
     viewBinding{
         enable=true
+    }
+    buildFeatures {
+        compose=true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+
+    buildTypes {
+        debug {
+            resValue("string", "naver_client_id", project.properties["naver_client_id"].toString())
+            resValue("string", "naver_client_secret", project.properties["naver_client_secret"].toString())
+            resValue("string", "naver_client_name", project.properties["naver_client_name"].toString())
+        }
+        release {
+            resValue("string", "naver_client_id", project.properties["naver_client_id"].toString())
+            resValue("string", "naver_client_secret", project.properties["naver_client_secret"].toString())
+            resValue("string", "naver_client_name", project.properties["naver_client_name"].toString())
+        }
     }
 }
 
