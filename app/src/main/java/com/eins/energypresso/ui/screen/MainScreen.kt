@@ -1,27 +1,143 @@
 package com.eins.energypresso.ui.screen
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.eins.domain.entity.UseTime
 import com.eins.domain.entity.VisitedCafe
+import com.eins.energypresso.ui.viewmodel.VisitedCafeListViewModel
 
 @Composable
 fun MainScreen(
+    visitCafeList: List<VisitedCafe>,
+    onClickSubMenu: (SubMenuEnum) -> Unit,
+    onClickVisitedCafe: (VisitedCafe) -> Unit,
+    onClickSideMenu: () -> Unit
+){
+    Scaffold(
+        topBar = {
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "에너지 프레소",
+                        modifier = Modifier
+                            .weight(1f)
+                            .align(Alignment.CenterVertically),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                    Button(
+                        onClick = { onClickSideMenu() },
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Text("메뉴")
+                    }
+                }
+            }
+        }
+    ) { innerPadding ->
+        Surface(modifier = Modifier.padding(innerPadding)) {
+            LazyColumn(modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+            ) {
+                item{
+                    UsableWattScreen(currentCharge = 200, onClickSubMenu = {
+                        onClickSubMenu(it)
+                    })
+                }
 
-) {
+                item{
+                    Text(text = "최근 방문한 카페", modifier = Modifier.padding(top = 20.dp))
+                    LazyColumn(modifier = Modifier.height(300.dp)){
+                        RecentVisitCafeScreen(
+                            visitCafe = visitCafeList,
+                            onItemClick = {
+                                onClickVisitedCafe(visitCafeList[it])
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+private fun MainScreen(
+    onClickSubMenu: (SubMenuEnum) -> Unit,
+    onClickVisitedCafe: (VisitedCafe) -> Unit
+){
+    LazyColumn(modifier = Modifier
+        .padding(10.dp)
+        .fillMaxWidth()
+    ) {
+        item{
+            UsableWattScreen(currentCharge = 200, onClickSubMenu = {
+                onClickSubMenu(it)
+            })
+        }
+
+        val list = arrayListOf<VisitedCafe>()
+
+        for(i in 0 .. 10){
+            list.add(
+                VisitedCafe(
+                    cafeName = "",
+                    address = "",
+                    useTime = UseTime(
+                        hour = 0,
+                        min = 0
+                    ),
+                    useWatt = 1000
+                ))
+        }
+
+        item{
+            Text(text = "최근 방문한 카페", modifier = Modifier.padding(top = 20.dp))
+            LazyColumn(modifier = Modifier.height(300.dp)){
+                RecentVisitCafeScreen(
+                    visitCafe = list,
+                    onItemClick = {
+                        onClickVisitedCafe(list[it])
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewMainScreen(){
     Scaffold(
         topBar = {
             Box(
@@ -51,53 +167,8 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
-        Column(modifier = Modifier
-            .padding(innerPadding).padding(10.dp)
-            .fillMaxWidth()) {
-            UsableWattScreen(currentCharge = 200, onClickSubMenu = {
-
-            })
-            val list = arrayListOf<VisitedCafe>(
-                VisitedCafe(
-                    cafeName = "카페 A",
-                    address = "A시 B구 C동 123-1",
-                    useTime = UseTime(
-                        hour = 10,
-                        min = 30
-                    ),
-                    useWatt = 1000
-                ),
-                VisitedCafe(
-                    cafeName = "카페 B",
-                    address = "A시 B구 C동 123-2",
-                    useTime = UseTime(
-                        hour = 10,
-                        min = 30
-                    ),
-                    useWatt = 1000
-                ),
-                VisitedCafe(
-                    cafeName = "카페 C",
-                    address = "A시 B구 C동 123-3",
-                    useTime = UseTime(
-                        hour = 10,
-                        min = 30
-                    ),
-                    useWatt = 1000
-                ),
-            )
-
-            RecentVisitCafeScreen(
-                modifier = Modifier.padding(top = 20.dp),
-                visitCafe = list,
-                onItemClick = {}
-            )
+        Surface(modifier = Modifier.padding(innerPadding)) {
+            MainScreen(onClickSubMenu = {}, onClickVisitedCafe = {})
         }
     }
-}
-
-@Preview
-@Composable
-fun previewMainScreen(){
-    MainScreen()
 }

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class VisitedCafeListViewModel @Inject constructor(
     private val visitCafeListRepository: VisitCafeListRepository
 ): ViewModel() {
-    var cafeListData: MutableStateFlow<List<VisitedCafe>?> = MutableStateFlow(null)
+    var cafeListData: MutableStateFlow<List<VisitedCafe>> = MutableStateFlow(arrayListOf())
         private set
 
     var error: MutableStateFlow<String?> = MutableStateFlow(null)

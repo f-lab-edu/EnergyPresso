@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -20,54 +23,44 @@ import androidx.compose.ui.unit.dp
 import com.eins.domain.entity.UseTime
 import com.eins.domain.entity.VisitedCafe
 
-@Composable
-fun RecentVisitCafeScreen(
-    modifier: Modifier,
+fun LazyListScope.RecentVisitCafeScreen(
     visitCafe: List<VisitedCafe>,
     onItemClick: (Int) -> Unit
 ){
-    Scaffold(
-        topBar = {
-            Text(text = "최근 이용한 카페", fontWeight = FontWeight.Bold)
-        },
-        modifier = modifier
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            visitCafe.forEachIndexed { index, visitedCafe ->
-                VisitCafeItem(visitedCafe){
-                    onItemClick(index)
-                }
-            }
+    visitCafe.forEachIndexed { index, visitedCafe ->
+        VisitCafeItem(visitedCafe){
+            onItemClick(index)
         }
     }
 }
 
-@Composable
-private fun VisitCafeItem(
+private fun LazyListScope.VisitCafeItem(
     visitCafe: VisitedCafe,
     onItemClick: () -> Unit
 ){
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp, bottom = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        onClick = onItemClick
-    ) {
-        Column(Modifier.padding(12.dp)) {
-            Text(text = visitCafe.cafeName, fontWeight = FontWeight.Bold)
-            Text(text = visitCafe.address, fontWeight = FontWeight.Bold, color = Color.Gray)
-            Text(
-                modifier = Modifier.padding(top = 10.dp),
-                text = "${visitCafe.useTime.toString()} 이용, ${visitCafe.useWatt.toString()}kWh",
-                fontWeight = FontWeight.Bold, color = Color.Gray)
+    item {
+        ElevatedCard(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 6.dp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ),
+            onClick = onItemClick
+        ) {
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                Text(text = visitCafe.cafeName, fontWeight = FontWeight.Bold)
+                Text(text = visitCafe.address, fontWeight = FontWeight.Bold, color = Color.Gray)
+                Text(
+                    modifier = Modifier.padding(top = 10.dp),
+                    text = "${visitCafe.useTime.toString()} 이용, ${visitCafe.useWatt.toString()}kWh",
+                    fontWeight = FontWeight.Bold, color = Color.Gray)
+            }
         }
     }
 }
@@ -103,9 +96,20 @@ private fun ReviewVisitCafeItem(){
             ),
             useWatt = 1000
         ),
+        VisitedCafe(
+            cafeName = "카페 C",
+            address = "A시 B구 C동 123-3",
+            useTime = UseTime(
+                hour = 10,
+                min = 30
+            ),
+            useWatt = 1000
+        ),
     )
 
-    RecentVisitCafeScreen(Modifier, list){ onClickItemIdx ->
+    LazyColumn{
+        RecentVisitCafeScreen(list){ onClickItemIdx ->
 
+        }
     }
 }
