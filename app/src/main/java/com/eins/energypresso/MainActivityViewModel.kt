@@ -13,20 +13,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val userRepository: UserRepository
+
 ): ViewModel() {
     private var _getUserLiveData = MutableLiveData<User>()
     val getUserLiveData: LiveData<User> = _getUserLiveData
 
     fun getUser(id: String, pass: String){
         viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                userRepository.GetUser(id, pass)
-            }.onSuccess {
-                _getUserLiveData.postValue(it)
-            }.onFailure {
-                it.printStackTrace()
-            }
+
         }
     }
 }

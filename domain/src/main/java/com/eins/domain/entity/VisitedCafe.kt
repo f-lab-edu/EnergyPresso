@@ -10,4 +10,8 @@ data class VisitedCafe(
 data class UseTime(
     val hour: Int,
     val min: Int
-)
+){
+    override fun toString(): String {
+        return "$hour 시간 $min 분"
+    }
+}

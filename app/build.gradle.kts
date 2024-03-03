@@ -1,4 +1,5 @@
-import org.gradle.initialization.Environment.Properties
+
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -41,22 +42,30 @@ android {
         enable=true
     }
     buildFeatures {
+        buildConfig=true
         compose=true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
     }
 
+    val localProperties = Properties().run {
+        load(File(rootProject.projectDir, "local.properties").inputStream())
+        this
+    }
+
+    defaultConfig {
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${localProperties["naver_client_id"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${localProperties["naver_client_secret"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_NAME", "\"${localProperties["naver_client_name"]}\"")
+    }
+
     buildTypes {
         debug {
-            resValue("string", "naver_client_id", project.properties["naver_client_id"].toString())
-            resValue("string", "naver_client_secret", project.properties["naver_client_secret"].toString())
-            resValue("string", "naver_client_name", project.properties["naver_client_name"].toString())
+
         }
         release {
-            resValue("string", "naver_client_id", project.properties["naver_client_id"].toString())
-            resValue("string", "naver_client_secret", project.properties["naver_client_secret"].toString())
-            resValue("string", "naver_client_name", project.properties["naver_client_name"].toString())
+
         }
     }
 }
@@ -64,7 +73,9 @@ android {
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
-
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     //compose
     val composeBom = platform("androidx.compose:compose-bom:2024.02.01")
     implementation(composeBom)

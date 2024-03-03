@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EnergyPresso</string>
+    <string name="back_button">뒤로가기</string>
 </resources>
