@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.eins.energypresso.ui.drawer.NavigationDrawer
 import com.eins.energypresso.ui.screen.MainScreen
 import com.eins.energypresso.ui.screen.PreviewMainScreen
+import com.eins.energypresso.ui.screen.UsePlugScreen
 import com.eins.energypresso.ui.viewmodel.VisitedCafeListViewModel
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,9 @@ enum class MainScreenNavEnum{
     Main,
     Use,
     Coupon,
-    Charge
+    Charge,
+    Find,
+    VisitedCafe
 }
 
 @Composable
@@ -72,6 +75,10 @@ fun MainRouter(
                         }
                     }
                 )
+            }
+
+            composable(route = MainScreenNavEnum.Find.name){
+                UsePlugScreen()
             }
         }
     }

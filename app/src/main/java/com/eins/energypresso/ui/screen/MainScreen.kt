@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.eins.domain.entity.UseTime
 import com.eins.domain.entity.VisitedCafe
 import com.eins.energypresso.ui.viewmodel.VisitedCafeListViewModel
@@ -32,7 +32,7 @@ fun MainScreen(
     visitCafeList: List<VisitedCafe>,
     onClickSubMenu: (SubMenuEnum) -> Unit,
     onClickVisitedCafe: (VisitedCafe) -> Unit,
-    onClickSideMenu: () -> Unit
+    onClickSideMenu: () -> Unit,
 ){
     Scaffold(
         topBar = {
@@ -119,6 +119,15 @@ private fun MainScreen(
                     ),
                     useWatt = 1000
                 ))
+        }
+
+        item {
+            ElevatedButton(
+                onClick = { /*TODO*/ },
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp).height(50.dp)
+                ) {
+                Text(text = "충전 플러그 사용 가능한 카페 찾기")
+            }
         }
 
         item{
