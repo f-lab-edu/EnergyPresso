@@ -2,6 +2,9 @@ package com.eins.energypresso
 
 import android.app.Application
 import android.util.Log
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.UserStateDetails
 import com.eins.data.datasource.InAppDataSharedPref
 import dagger.hilt.android.HiltAndroidApp
 

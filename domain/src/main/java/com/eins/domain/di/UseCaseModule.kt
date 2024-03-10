@@ -3,9 +3,11 @@ package com.eins.domain.di
 import com.eins.domain.repository.ChargeUseLogListRepository
 import com.eins.domain.repository.GetCafeCurrentInfoRepository
 import com.eins.domain.repository.UserRepository
+import com.eins.domain.repository.UserUniqueIdRepository
 import com.eins.domain.repository.VisitCafeListRepository
 import com.eins.domain.usecase.CafeCurrentInfoUseCase
 import com.eins.domain.usecase.ChargeUseLogListUseCase
+import com.eins.domain.usecase.UserUniqueIdUseCase
 import com.eins.domain.usecase.UserUseCase
 import com.eins.domain.usecase.VisitCafeListUseCase
 import dagger.Module
@@ -27,4 +29,7 @@ object UseCaseModule {
 
     @Provides
     fun visitCafeListUseCase(visitCafeListRepository: VisitCafeListRepository): VisitCafeListUseCase = VisitCafeListUseCase(visitCafeListRepository)
+
+    @Provides
+    fun uniqueUserIdUseCase(uniqueIdRepository: UserUniqueIdRepository): UserUniqueIdUseCase = UserUniqueIdUseCase(uniqueIdRepository)
 }

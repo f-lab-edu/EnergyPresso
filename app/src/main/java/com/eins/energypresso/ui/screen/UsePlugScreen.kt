@@ -25,11 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.eins.energypresso.ui.viewmodel.UsableWattViewModel
 
 
 @Composable
 fun UsePlugScreen(
-
+    viewModel: UsableWattViewModel = hiltViewModel()
 ){
     val currentProgress by remember {
         mutableFloatStateOf(0.5f)

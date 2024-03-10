@@ -11,6 +11,7 @@ object InAppDataSharedPref {
     private val PREF_FILE_NAME = "TokenPreferences"
     private val ACCESS_TOKEN_KEY = "AccessTokenKey"
     private val REFRESH_TOKEN_KEY = "RefreshTokenKey"
+    private val UNIQUE_USER_ID_KEY = "UNIQUE_USER_ID_KEY"
 
     private var prefs: SharedPreferences? = null
 
@@ -24,4 +25,7 @@ object InAppDataSharedPref {
         true} ?: run { false }
     fun getAccessToken(): String? = prefs?.getString(ACCESS_TOKEN_KEY, "")
     fun getRefreshToken(): String? = prefs?.getString(REFRESH_TOKEN_KEY, "")
+    fun saveUniqueUserId(accessToken: String): Boolean = prefs?.edit()?.putString(UNIQUE_USER_ID_KEY, accessToken)?.let { it.apply()
+        true } ?: run { false }
+    fun getUniqueUserId(): String? = prefs?.getString(UNIQUE_USER_ID_KEY, "")
 }

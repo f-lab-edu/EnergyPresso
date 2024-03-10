@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.eins.energypresso.ui.drawer.NavigationDrawer
+import com.eins.energypresso.ui.screen.MainMenuList
 import com.eins.energypresso.ui.screen.MainScreen
 import com.eins.energypresso.ui.screen.PreviewMainScreen
 import com.eins.energypresso.ui.screen.UsePlugScreen
@@ -35,11 +36,7 @@ enum class MainScreenNavEnum{
 @Composable
 fun MainRouter(
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-    viewModel: VisitedCafeListViewModel = hiltViewModel(),
 ) {
-    val cafeListData by viewModel.cafeListData.collectAsState()
-    viewModel.getVisitCafeList()
-
     val scope = rememberCoroutineScope()
     val userNickName = remember {
         mutableStateOf("")
@@ -58,26 +55,33 @@ fun MainRouter(
             }
         },
     ){
+        val mainNavHost = rememberNavController()
         NavHost(
-            navController = rememberNavController(),
+            navController = mainNavHost,
             startDestination = MainScreenNavEnum.Main.name
         ){
             composable(route = MainScreenNavEnum.Main.name){
                 MainScreen(
-                    visitCafeList = cafeListData,
                     onClickSubMenu = {},
                     onClickVisitedCafe = {},
                     onClickSideMenu = {
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
+                        when(it){
+                            MainMenuList.SideMenu -> {
+                                scope.launch {
+                                    drawerState.apply {
+                                        if (isClosed) open() else close()
+                                    }
+                                }
+                            }
+                            MainMenuList.UsePlugMenu -> {
+                                mainNavHost.navigate(MainScreenNavEnum.Use.name)
                             }
                         }
                     }
                 )
             }
 
-            composable(route = MainScreenNavEnum.Find.name){
+            composable(route = MainScreenNavEnum.Use.name){
                 UsePlugScreen()
             }
         }

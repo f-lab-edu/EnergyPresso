@@ -23,68 +23,57 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.eins.domain.entity.UseTime
 import com.eins.domain.entity.VisitedCafe
 import com.eins.energypresso.ui.viewmodel.VisitedCafeListViewModel
 
+enum class MainMenuList{
+    SideMenu,
+    UsePlugMenu
+}
+
 @Composable
 fun MainScreen(
-    visitCafeList: List<VisitedCafe>,
+    viewModel: VisitedCafeListViewModel = hiltViewModel(),
     onClickSubMenu: (SubMenuEnum) -> Unit,
     onClickVisitedCafe: (VisitedCafe) -> Unit,
-    onClickSideMenu: () -> Unit,
+    onClickSideMenu: (MainMenuList) -> Unit,
 ){
-    Scaffold(
-        topBar = {
-            Box(
-                modifier = Modifier.fillMaxWidth()
+    val cafeListData = viewModel.cafeListData.collectAsState()
+    viewModel.getVisitCafeList()
+    
+    LazyColumn(modifier = Modifier
+        .padding(10.dp)
+        .fillMaxWidth()
+    ) {
+        item{
+            UsableWattScreen(currentCharge = 200, onClickSubMenu = {
+                onClickSubMenu(it)
+            })
+        }
+
+        item {
+            ElevatedButton(
+                onClick = { onClickSideMenu(MainMenuList.UsePlugMenu) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+                    .height(50.dp)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "에너지 프레소",
-                        modifier = Modifier
-                            .weight(1f)
-                            .align(Alignment.CenterVertically),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    Button(
-                        onClick = { onClickSideMenu() },
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    ) {
-                        Text("메뉴")
-                    }
-                }
+                Text(text = "충전 플러그 사용 가능한 카페 찾기")
             }
         }
-    ) { innerPadding ->
-        Surface(modifier = Modifier.padding(innerPadding)) {
-            LazyColumn(modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-            ) {
-                item{
-                    UsableWattScreen(currentCharge = 200, onClickSubMenu = {
-                        onClickSubMenu(it)
-                    })
-                }
 
-                item{
-                    Text(text = "최근 방문한 카페", modifier = Modifier.padding(top = 20.dp))
-                    LazyColumn(modifier = Modifier.height(300.dp)){
-                        RecentVisitCafeScreen(
-                            visitCafe = visitCafeList,
-                            onItemClick = {
-                                onClickVisitedCafe(visitCafeList[it])
-                            }
-                        )
+        item{
+            Text(text = "최근 방문한 카페", modifier = Modifier.padding(top = 20.dp))
+            LazyColumn(modifier = Modifier.height(300.dp)){
+                RecentVisitCafeScreen(
+                    visitCafe = cafeListData.value,
+                    onItemClick = {
+                        onClickVisitedCafe(cafeListData.value[it])
                     }
-                }
+                )
             }
         }
     }
@@ -124,7 +113,10 @@ private fun MainScreen(
         item {
             ElevatedButton(
                 onClick = { /*TODO*/ },
-                modifier = Modifier.fillMaxWidth().padding(top = 10.dp).height(50.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+                    .height(50.dp)
                 ) {
                 Text(text = "충전 플러그 사용 가능한 카페 찾기")
             }

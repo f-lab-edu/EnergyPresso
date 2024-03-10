@@ -44,6 +44,7 @@ android {
     buildFeatures {
         buildConfig=true
         compose=true
+        buildConfig=true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
@@ -58,15 +59,12 @@ android {
         buildConfigField("String", "NAVER_CLIENT_ID", "\"${localProperties["naver_client_id"]}\"")
         buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${localProperties["naver_client_secret"]}\"")
         buildConfigField("String", "NAVER_CLIENT_NAME", "\"${localProperties["naver_client_name"]}\"")
-    }
 
-    buildTypes {
-        debug {
-
-        }
-        release {
-
-        }
+        buildConfigField("String", "CUSTOMER_SPECIFIC_ENDPOINT", "\"${localProperties["CUSTOMER_SPECIFIC_ENDPOINT"]}\"")
+        buildConfigField("String", "AWS_IOT_POLICY_NAME", "\"${localProperties["AWS_IOT_POLICY_NAME"]}\"")
+        buildConfigField("String", "KEYSTORE_NAME", "\"${localProperties["KEYSTORE_NAME"]}\"")
+        buildConfigField("String", "KEYSTORE_PASSWORD", "\"${localProperties["KEYSTORE_PASSWORD"]}\"")
+        buildConfigField("String", "CERTIFICATE_ID", "\"${localProperties["CERTIFICATE_ID"]}\"")
     }
 }
 
@@ -120,6 +118,13 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3")
+
+    //aws
+    implementation("com.amazonaws:aws-android-sdk-iot:2.16.+")
+    implementation("com.amazonaws:aws-android-sdk-cognito:2.16.+")
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.16.+")
+    implementation("com.amazonaws:aws-android-sdk-s3:2.16.+")
+    implementation("com.amazonaws:aws-android-sdk-auth-core:2.16.+")
 
     //네아로
     implementation("com.navercorp.nid:oauth-jdk8:5.9.0") // jdk 8

@@ -1,6 +1,7 @@
 package com.eins.energypresso
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +13,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.navercorp.nid.NaverIdLoginSDK
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.UserStateDetails
 import com.eins.energypresso.ui.screen.LoginScreen
 import com.eins.energypresso.ui.router.MainRouter
+import com.eins.energypresso.ui.viewmodel.UsableWattViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +39,18 @@ class LoginActivity: AppCompatActivity() {
         )
 
         NaverIdLoginSDK.logout()
+
+        AWSMobileClient.getInstance().initialize(this, object : Callback<UserStateDetails> {
+            override fun onResult(result: UserStateDetails?) {
+                Log.d("", """
+                    result = ${result?.userState}
+                """.trimIndent())
+            }
+
+            override fun onError(e: java.lang.Exception?) {
+                e?.printStackTrace()
+            }
+        })
 
 
         setContent {

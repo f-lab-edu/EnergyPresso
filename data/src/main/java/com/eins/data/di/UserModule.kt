@@ -2,10 +2,12 @@ package com.eins.data.di
 
 import com.eins.data.repository.ChargeUseLogListRepositoryImpl
 import com.eins.data.repository.GetCafeCurrentInfoRepositoryImpl
+import com.eins.data.repository.UserUniqueIdRepositoryImpl
 import com.eins.data.repository.UserRepositoryImpl
 import com.eins.data.repository.VisitCafeListRepositoryImpl
 import com.eins.domain.repository.ChargeUseLogListRepository
 import com.eins.domain.repository.GetCafeCurrentInfoRepository
+import com.eins.domain.repository.UserUniqueIdRepository
 import com.eins.domain.repository.UserRepository
 import com.eins.domain.repository.VisitCafeListRepository
 import dagger.Module
@@ -27,4 +29,7 @@ object UserModule {
 
     @Provides
     fun visitCafeListRepository(): VisitCafeListRepository = VisitCafeListRepositoryImpl()
+
+    @Provides
+    fun getUserUniqueIdRepository(): UserUniqueIdRepository = UserUniqueIdRepositoryImpl()
 }
