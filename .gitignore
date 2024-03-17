@@ -186,4 +186,6 @@ fabric.properties
 
 
 /data/src/main/res/raw/awsconfiguration.json
+/app/src/main/res/raw/awsconfiguration.json
+/domain/src/main/res/raw/awsconfiguration.json
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,kotlin
