@@ -3,13 +3,13 @@ package com.eins.domain.di
 import com.eins.domain.repository.ChargeUseLogListRepository
 import com.eins.domain.repository.GetCafeCurrentInfoRepository
 import com.eins.domain.repository.UserRepository
-import com.eins.domain.repository.UserUniqueIdRepository
 import com.eins.domain.repository.VisitCafeListRepository
+import com.eins.domain.repository.network.MqttBaseRepository
 import com.eins.domain.usecase.CafeCurrentInfoUseCase
 import com.eins.domain.usecase.ChargeUseLogListUseCase
-import com.eins.domain.usecase.UserUniqueIdUseCase
 import com.eins.domain.usecase.UserUseCase
 import com.eins.domain.usecase.VisitCafeListUseCase
+import com.eins.domain.usecase.network.MqttBaseUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +31,7 @@ object UseCaseModule {
     fun visitCafeListUseCase(visitCafeListRepository: VisitCafeListRepository): VisitCafeListUseCase = VisitCafeListUseCase(visitCafeListRepository)
 
     @Provides
-    fun uniqueUserIdUseCase(uniqueIdRepository: UserUniqueIdRepository): UserUniqueIdUseCase = UserUniqueIdUseCase(uniqueIdRepository)
+    fun provideMqttBaseUseCase(
+        mqttBaseRepository: MqttBaseRepository
+    ): MqttBaseUseCase = MqttBaseUseCase(mqttBaseRepository)
 }

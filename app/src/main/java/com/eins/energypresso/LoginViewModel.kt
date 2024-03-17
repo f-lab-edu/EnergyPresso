@@ -8,23 +8,38 @@ import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserStateDetails
 import com.eins.domain.entity.User
 import com.eins.domain.usecase.UserUseCase
+import com.eins.domain.usecase.network.MqttBaseUseCase
 import com.eins.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val getUserUseCase: UserUseCase
+    private val getUserUseCase: UserUseCase,
+    //private val mqttBaseUseCase: MqttBaseUseCase
 ): ViewModel() {
     var error: MutableStateFlow<String?> = MutableStateFlow(null)
         private set
 
     var loginData: MutableSharedFlow<Boolean> = MutableSharedFlow(1, 1)
         private set
+
+    init {
+        /*
+        viewModelScope.launch {
+            mqttBaseUseCase.subscribe("test").collect{
+                Log.d("LoginViewModel", """
+                    message : $it
+                """.trimIndent())
+            }
+        }
+         */
+    }
 
     fun login(id: String, pass: String){
         viewModelScope.launch(Dispatchers.IO) {
