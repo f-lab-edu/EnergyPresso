@@ -3,10 +3,6 @@ package com.eins.energypresso
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobile.client.Callback
-import com.amazonaws.mobile.client.UserStateDetails
-import com.eins.domain.entity.User
 import com.eins.domain.usecase.UserUseCase
 import com.eins.domain.usecase.network.MqttBaseUseCase
 import com.eins.domain.util.Resource
@@ -14,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
