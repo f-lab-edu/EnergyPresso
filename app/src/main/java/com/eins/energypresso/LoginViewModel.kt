@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val getUserUseCase: UserUseCase,
-    //private val mqttBaseUseCase: MqttBaseUseCase
+    private val mqttBaseUseCase: MqttBaseUseCase
 ): ViewModel() {
     var error: MutableStateFlow<String?> = MutableStateFlow(null)
         private set
@@ -30,7 +30,6 @@ class LoginViewModel @Inject constructor(
         private set
 
     init {
-        /*
         viewModelScope.launch {
             mqttBaseUseCase.subscribe("test").collect{
                 Log.d("LoginViewModel", """
@@ -38,7 +37,6 @@ class LoginViewModel @Inject constructor(
                 """.trimIndent())
             }
         }
-         */
     }
 
     fun login(id: String, pass: String){
