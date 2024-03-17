@@ -82,7 +82,11 @@ fun MainRouter(
             }
 
             composable(route = MainScreenNavEnum.Use.name){
-                UsePlugScreen()
+                UsePlugScreen{
+                    mainNavHost.navigate(MainScreenNavEnum.Main.name){
+                        popUpTo(MainScreenNavEnum.Use.name)
+                    }
+                }
             }
         }
     }
