@@ -1,10 +1,11 @@
 package com.eins.domain.usecase
 
-import com.eins.domain.repository.GetLeftUsableTimeRepository
-import kotlinx.coroutines.flow.Flow
+import com.eins.domain.entity.user.watt.value.Minute
+import com.eins.domain.repository.IUserRepository
+import javax.inject.Inject
 
-class GetLeftUsableTimeUseCase(
-    private val getLeftUsableTimeRepository: GetLeftUsableTimeRepository
+class GetLeftUsableTimeUseCase @Inject constructor(
+    private val iUserRepository: IUserRepository
 ) {
-    suspend fun getLeftUsableTime(): Flow<GetLeftUsableTimeRepository.Minute> = getLeftUsableTimeRepository.getLeftUsableTime()
+    suspend operator fun invoke(): Minute = iUserRepository.getLeftUsableTime()
 }

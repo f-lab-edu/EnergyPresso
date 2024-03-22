@@ -29,10 +29,16 @@ class UsePlugScreenViewModel @Inject constructor(
 
     private var timerJob = viewModelScope.launch(Dispatchers.IO, start = CoroutineStart.LAZY) {}
 
+    val errorMessage = mutableStateOf<String?>(null)
+
     init {
         viewModelScope.launch {
-            getLeftUsableTimeUseCase.getLeftUsableTime().collect(){
+            runCatching {
+                getLeftUsableTimeUseCase()
+            }.onSuccess {
                 setUseTime(Minute(it.get()))
+            }.onFailure {
+                errorMessage.value = "남은 시간을 가져오는 중 오류가 발생했습니다."
             }
         }
     }
