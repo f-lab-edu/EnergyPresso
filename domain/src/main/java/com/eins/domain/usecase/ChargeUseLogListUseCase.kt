@@ -1,11 +1,11 @@
 package com.eins.domain.usecase
 
 import com.eins.domain.entity.ChargeUseLog
-import com.eins.domain.repository.ChargeUseLogListRepository
-import com.eins.domain.util.Resource
+import com.eins.domain.repository.IUserRepository
+import javax.inject.Inject
 
-class ChargeUseLogListUseCase constructor(
-    private val chargeUseLogListRepository: ChargeUseLogListRepository
+class ChargeUseLogListUseCase @Inject constructor(
+    private val iUserRepository: IUserRepository
 ) {
-    suspend fun getChargeUseLogList(): Resource<List<ChargeUseLog>> = chargeUseLogListRepository.getChargeUseLogList()
+    suspend operator fun invoke(): List<ChargeUseLog> = iUserRepository.getUseLogList()
 }

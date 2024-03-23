@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -32,10 +34,43 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        buildConfig=true
+    }
+
+    val localProperties = Properties().run {
+        load(File(rootProject.projectDir, "local.properties").inputStream())
+        this
+    }
+
+    defaultConfig {
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${localProperties["naver_client_id"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${localProperties["naver_client_secret"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_NAME", "\"${localProperties["naver_client_name"]}\"")
+
+        buildConfigField("String", "CUSTOMER_SPECIFIC_ENDPOINT", "\"${localProperties["CUSTOMER_SPECIFIC_ENDPOINT"]}\"")
+        buildConfigField("String", "AWS_IOT_POLICY_NAME", "\"${localProperties["AWS_IOT_POLICY_NAME"]}\"")
+        buildConfigField("String", "KEYSTORE_NAME", "\"${localProperties["KEYSTORE_NAME"]}\"")
+        buildConfigField("String", "KEYSTORE_PASSWORD", "\"${localProperties["KEYSTORE_PASSWORD"]}\"")
+        buildConfigField("String", "CERTIFICATE_ID", "\"${localProperties["CERTIFICATE_ID"]}\"")
+
+        buildConfigField("String", "DEVICE_PAIRING_AES_KEY_VALUE", "\"${localProperties["DEVICE_PAIRING_AES_KEY_VALUE"]}\"")
+        buildConfigField("String", "DEVICE_PAIRING_AES_IV_VALUE", "\"${localProperties["DEVICE_PAIRING_AES_IV_VALUE"]}\"")
+
+        testInstrumentationRunner = "com.eins.data.CustomTestRunner"
+    }
 }
 
 dependencies {
     implementation(project(":domain"))
+
+    //aws
+    implementation("com.amazonaws:aws-android-sdk-iot:2.16.13")
+    implementation("com.amazonaws:aws-android-sdk-cognito:2.16.13")
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.16.13")
+    implementation("com.amazonaws:aws-android-sdk-s3:2.16.13")
+    implementation("com.amazonaws:aws-android-sdk-auth-core:2.16.13")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -47,6 +82,17 @@ dependencies {
     //hilt
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    // For Robolectric tests.
+    testImplementation("com.google.dagger:hilt-android-testing:2.44")
+    // ...with Kotlin.
+    kaptTest("com.google.dagger:hilt-android-compiler:2.44")
+
+
+    // For instrumented tests.
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    // ...with Kotlin.
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
 
     //ktx android
     implementation("androidx.activity:activity-ktx:1.8.2")

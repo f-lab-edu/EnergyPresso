@@ -1,7 +1,6 @@
 package com.eins.energypresso.ui.screen
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,19 +13,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eins.domain.entity.UseTime
 import com.eins.domain.entity.VisitedCafe
-import com.eins.energypresso.ui.viewmodel.VisitedCafeListViewModel
+import com.eins.energypresso.ui.cafe.visitedList.VisitedCafeListScreen
+import com.eins.energypresso.ui.cafe.visitedList.VisitedCafeListViewModel
 
 enum class MainMenuList{
     SideMenu,
@@ -41,6 +38,7 @@ fun MainScreen(
     onClickSideMenu: (MainMenuList) -> Unit,
 ){
     val cafeListData = viewModel.cafeListData.collectAsState()
+
     viewModel.getVisitCafeList()
     
     LazyColumn(modifier = Modifier
@@ -66,15 +64,17 @@ fun MainScreen(
         }
 
         item{
-            Text(text = "최근 방문한 카페", modifier = Modifier.padding(top = 20.dp))
-            LazyColumn(modifier = Modifier.height(300.dp)){
-                RecentVisitCafeScreen(
-                    visitCafe = cafeListData.value,
-                    onItemClick = {
-                        onClickVisitedCafe(cafeListData.value[it])
-                    }
-                )
-            }
+            val vm: VisitedCafeListViewModel = hiltViewModel()
+
+            val list = vm.cafeListData.collectAsState()
+
+            VisitedCafeListScreen(
+                modifier = Modifier,
+                cafeList = list.value,
+                onClickVisitedCafe = {
+
+                }
+            )
         }
     }
 

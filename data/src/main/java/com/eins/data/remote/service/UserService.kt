@@ -11,9 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface UserService {
-    @GET("/user")
-    suspend fun GetUserInfo(@Query("id") id: String, @Query("pass") pass: String): Response<BaseResponse<GetUserInfoResponse>>
-
     @GET("/cafe/visit/list")
     suspend fun GetVisiteCafeList(): Response<BaseResponse<List<VisitedCafe>>>
 

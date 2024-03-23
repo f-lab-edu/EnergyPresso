@@ -6,13 +6,10 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,7 +18,6 @@ import com.eins.energypresso.ui.screen.MainMenuList
 import com.eins.energypresso.ui.screen.MainScreen
 import com.eins.energypresso.ui.screen.PreviewMainScreen
 import com.eins.energypresso.ui.screen.UsePlugScreen
-import com.eins.energypresso.ui.viewmodel.VisitedCafeListViewModel
 import kotlinx.coroutines.launch
 
 enum class MainScreenNavEnum{
@@ -82,7 +78,11 @@ fun MainRouter(
             }
 
             composable(route = MainScreenNavEnum.Use.name){
-                UsePlugScreen()
+                UsePlugScreen{
+                    mainNavHost.navigate(MainScreenNavEnum.Main.name){
+                        popUpTo(MainScreenNavEnum.Use.name)
+                    }
+                }
             }
         }
     }

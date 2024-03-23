@@ -1,8 +1,5 @@
 {
   "Version": "1.0",
-  "IdentityManager": {
-    "Default": {}
-  },
   "CredentialsProvider": {
     "CognitoIdentity": {
       "Default": {

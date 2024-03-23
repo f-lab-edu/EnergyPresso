@@ -2,12 +2,14 @@ package com.eins.data.remote
 
 import android.util.Log
 import com.eins.data.datasource.InAppDataSharedPref
+import com.eins.data.remote.service.AuthService
 import com.eins.data.remote.service.UserService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object RetrofitServer {
     private val httpClient by lazy {
@@ -38,4 +40,5 @@ object RetrofitServer {
     }
 
     fun userService(): UserService = mainServer.create(UserService::class.java)
+    fun authService(): AuthService = mainServer.create(AuthService::class.java)
 }
