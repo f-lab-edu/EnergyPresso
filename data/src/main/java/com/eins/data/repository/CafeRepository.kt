@@ -3,6 +3,12 @@ package com.eins.data.repository
 import com.eins.domain.entity.CafeCurrentInfo
 import com.eins.domain.entity.UseTime
 import com.eins.domain.entity.VisitedCafe
+import com.eins.domain.entity.cafe.find.AroundCafeData
+import com.eins.domain.entity.cafe.find.FrequentlyCafeData
+import com.eins.domain.entity.cafe.find.value.Address
+import com.eins.domain.entity.cafe.find.value.CafeName
+import com.eins.domain.entity.cafe.find.value.ImageUrl
+import com.eins.domain.entity.cafe.find.value.Star
 import com.eins.domain.repository.ICafeRepository
 import javax.inject.Inject
 
@@ -27,4 +33,26 @@ class CafeRepository @Inject constructor(
             leftSitCount = id,
             imageUrl = id.toString()
         )
+
+    override suspend fun getAroundCafeList(): List<AroundCafeData> =
+        arrayListOf<AroundCafeData>().apply {
+            for (i in 0 .. 10){
+                this.add(AroundCafeData(
+                    imageUrl = ImageUrl("https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200506_223%2F1588730227110kCxsl_JPEG%2FuI6citkjAfP1NRbklRuQvpBP.jpeg.jpg"),
+                    cafeName = CafeName("FOLKI"),
+                    star = Star(4.5f),
+                    address = Address("서울 종로구 사직로9길 6")
+                ))
+            }
+        }
+
+    override suspend fun getFrequentlyCafeList(): List<FrequentlyCafeData> =
+        arrayListOf<FrequentlyCafeData>().apply {
+            for(i in 0 .. 10){
+                this.add(FrequentlyCafeData(
+                    imageUrl = ImageUrl("https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200506_223%2F1588730227110kCxsl_JPEG%2FuI6citkjAfP1NRbklRuQvpBP.jpeg.jpg"),
+                    cafeName = CafeName("FOLKI")
+                ))
+            }
+        }
 }

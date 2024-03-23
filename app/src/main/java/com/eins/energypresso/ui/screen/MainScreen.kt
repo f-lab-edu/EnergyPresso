@@ -27,20 +27,18 @@ import com.eins.energypresso.ui.cafe.visitedList.VisitedCafeListViewModel
 
 enum class MainMenuList{
     SideMenu,
-    UsePlugMenu
+    UsePlugMenu,
+    CafeList
 }
 
 @Composable
 fun MainScreen(
-    viewModel: VisitedCafeListViewModel = hiltViewModel(),
+    visitedCafeList: List<VisitedCafe>,
+    onSelectVisitedCafe: (VisitedCafe) -> Unit,
     onClickSubMenu: (SubMenuEnum) -> Unit,
-    onClickVisitedCafe: (VisitedCafe) -> Unit,
     onClickSideMenu: (MainMenuList) -> Unit,
+    onClickFindCafe: () -> Unit
 ){
-    val cafeListData = viewModel.cafeListData.collectAsState()
-
-    viewModel.getVisitCafeList()
-    
     LazyColumn(modifier = Modifier
         .padding(10.dp)
         .fillMaxWidth()
@@ -53,7 +51,7 @@ fun MainScreen(
 
         item {
             ElevatedButton(
-                onClick = { onClickSideMenu(MainMenuList.UsePlugMenu) },
+                onClick = onClickFindCafe,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)
@@ -64,112 +62,32 @@ fun MainScreen(
         }
 
         item{
-            val vm: VisitedCafeListViewModel = hiltViewModel()
-
-            val list = vm.cafeListData.collectAsState()
-
             VisitedCafeListScreen(
                 modifier = Modifier,
-                cafeList = list.value,
-                onClickVisitedCafe = {
-
-                }
+                cafeList = visitedCafeList,
+                onClickVisitedCafe = onSelectVisitedCafe
             )
         }
     }
 
 }
 
-@Composable
-private fun MainScreen(
-    onClickSubMenu: (SubMenuEnum) -> Unit,
-    onClickVisitedCafe: (VisitedCafe) -> Unit
-){
-    LazyColumn(modifier = Modifier
-        .padding(10.dp)
-        .fillMaxWidth()
-    ) {
-        item{
-            UsableWattScreen(currentCharge = 200, onClickSubMenu = {
-                onClickSubMenu(it)
-            })
-        }
-
-        val list = arrayListOf<VisitedCafe>()
-
-        for(i in 0 .. 10){
-            list.add(
-                VisitedCafe(
-                    cafeName = "",
-                    address = "",
-                    useTime = UseTime(
-                        hour = 0,
-                        min = 0
-                    ),
-                    useWatt = 1000
-                ))
-        }
-
-        item {
-            ElevatedButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp)
-                    .height(50.dp)
-                ) {
-                Text(text = "충전 플러그 사용 가능한 카페 찾기")
-            }
-        }
-
-        item{
-            Text(text = "최근 방문한 카페", modifier = Modifier.padding(top = 20.dp))
-            LazyColumn(modifier = Modifier.height(300.dp)){
-                RecentVisitCafeScreen(
-                    visitCafe = list,
-                    onItemClick = {
-                        onClickVisitedCafe(list[it])
-                    }
-                )
-            }
-        }
-    }
-}
-
 @Preview
 @Composable
 fun PreviewMainScreen(){
-    Scaffold(
-        topBar = {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "에너지 프레소",
-                        modifier = Modifier
-                            .weight(1f)
-                            .align(Alignment.CenterVertically),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    Button(
-                        onClick = { TODO() },
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    ) {
-                        Text("메뉴")
-                    }
-                }
-            }
+    MainScreen(
+        visitedCafeList = arrayListOf(),
+        onSelectVisitedCafe = {
+
+        },
+        onClickSubMenu = {
+
+        },
+        onClickSideMenu = {
+
+        },
+        onClickFindCafe = {
+
         }
-    ) { innerPadding ->
-        Surface(modifier = Modifier.padding(innerPadding)) {
-            MainScreen(onClickSubMenu = {}, onClickVisitedCafe = {})
-        }
-    }
+    )
 }

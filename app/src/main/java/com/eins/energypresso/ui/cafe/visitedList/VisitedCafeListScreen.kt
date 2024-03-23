@@ -16,14 +16,14 @@ import com.eins.energypresso.ui.screen.RecentVisitCafeScreen
 fun VisitedCafeListScreen(
     modifier: Modifier,
     cafeList: List<VisitedCafe>,
-    onClickVisitedCafe: (index: Int) -> Unit
+    onClickVisitedCafe: (VisitedCafe) -> Unit
 ) {
     Text(text = "최근 방문한 카페", modifier = modifier)
     LazyColumn(modifier = Modifier.height(300.dp)){
         RecentVisitCafeScreen(
             visitCafe = cafeList,
             onItemClick = {
-                onClickVisitedCafe(it)
+                onClickVisitedCafe(cafeList[it])
             }
         )
     }
