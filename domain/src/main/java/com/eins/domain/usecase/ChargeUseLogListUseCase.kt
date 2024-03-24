@@ -7,5 +7,5 @@ import javax.inject.Inject
 class ChargeUseLogListUseCase @Inject constructor(
     private val iUserRepository: IUserRepository
 ) {
-    suspend operator fun invoke(): List<ChargeUseLog> = iUserRepository.getUseLogList()
+    suspend operator fun invoke(): List<ChargeUseLog> = iUserRepository.getChargeUseLogList()
 }
