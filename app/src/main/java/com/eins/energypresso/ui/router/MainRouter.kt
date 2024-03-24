@@ -24,6 +24,7 @@ import com.eins.energypresso.ui.point.PointLogScreenViewModel
 import com.eins.energypresso.ui.screen.MainScreen
 import com.eins.energypresso.ui.screen.MainScreenViewModel
 import com.eins.energypresso.ui.screen.PreviewMainScreen
+import com.eins.energypresso.ui.screen.SubMenuEnum
 import com.eins.energypresso.ui.screen.UsePlugScreen
 import kotlinx.coroutines.launch
 
@@ -76,8 +77,12 @@ fun MainRouter(
                     onSelectVisitedCafe = {
 
                     },
-                    onClickSubMenu = {
-
+                    onClickSubMenu = { subMenu ->
+                        when(subMenu){
+                            SubMenuEnum.UsePlug -> mainNavHost.navigate(MainScreenNavEnum.Use.name)
+                            SubMenuEnum.Coupon -> TODO()
+                            SubMenuEnum.Charge -> TODO()
+                        }
                     },
                     onClickSideMenu = {
                         scope.launch {
