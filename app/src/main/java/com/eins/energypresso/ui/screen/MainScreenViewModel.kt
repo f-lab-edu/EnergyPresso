@@ -19,6 +19,10 @@ class MainScreenViewModel @Inject constructor(
 
     var errorMessage = MutableStateFlow<String?>(null)
 
+    init {
+        getVisitCafeList()
+    }
+
     fun getVisitCafeList(){
         viewModelScope.launch(Dispatchers.IO) {
             visitCafeListUseCase()

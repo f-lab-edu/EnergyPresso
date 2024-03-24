@@ -19,7 +19,8 @@ import com.eins.energypresso.MainActivityViewModel
 import com.eins.energypresso.ui.cafe.find.FindCafeScreen
 import com.eins.energypresso.ui.cafe.find.FindCafeScreenViewModel
 import com.eins.energypresso.ui.drawer.NavigationDrawer
-import com.eins.energypresso.ui.screen.MainMenuList
+import com.eins.energypresso.ui.point.PointLogScreen
+import com.eins.energypresso.ui.point.PointLogScreenViewModel
 import com.eins.energypresso.ui.screen.MainScreen
 import com.eins.energypresso.ui.screen.MainScreenViewModel
 import com.eins.energypresso.ui.screen.PreviewMainScreen
@@ -32,7 +33,8 @@ enum class MainScreenNavEnum{
     Coupon,
     Charge,
     FindCafe,
-    VisitedCafe
+    VisitedCafe,
+    Log
 }
 
 @Composable
@@ -43,6 +45,7 @@ fun MainRouter(
     val userNickName = remember {
         mutableStateOf("")
     }
+    val mainNavHost = rememberNavController()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -51,13 +54,16 @@ fun MainRouter(
                 NavigationDrawer(
                     nickname = userNickName.value,
                     onClickMenu = {
-
+                        scope.launch {
+                            drawerState.close()
+                        }
+                        mainNavHost.navigate(MainScreenNavEnum.Log.name)
                     }
                 )
             }
         },
     ){
-        val mainNavHost = rememberNavController()
+
         NavHost(
             navController = mainNavHost,
             startDestination = MainScreenNavEnum.Main.name
@@ -74,7 +80,9 @@ fun MainRouter(
 
                     },
                     onClickSideMenu = {
-
+                        scope.launch {
+                            drawerState.open()
+                        }
                     },
                     onClickFindCafe = {
                         mainNavHost.navigate(MainScreenNavEnum.FindCafe.name)
@@ -99,6 +107,18 @@ fun MainRouter(
                         mainNavHost.navigate(MainScreenNavEnum.Main.name)
                     }
                 )
+            }
+
+            composable(route = MainScreenNavEnum.Log.name){
+                val viewModel: PointLogScreenViewModel = hiltViewModel()
+                PointLogScreen(
+                    chargeLogList = viewModel.chargeUseLogList.collectAsState().value,
+                    onClose = {
+                        mainNavHost.navigate(MainScreenNavEnum.Main.name)
+                    },
+                    onSelectItem = {
+
+                    })
             }
         }
     }
